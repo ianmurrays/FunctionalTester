@@ -89,6 +89,9 @@ class FunctionalTester:
     
     if len(matches) != len(comparison_steps):
       self.log("FATAL: Ammount of comparison steps and prints in the script differ.")
+      self.log("These were the outputs:")
+      for match in matches:
+        print "  ", match.strip()
       exit(1)
     
     # Now use the compare steps
