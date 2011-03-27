@@ -9,7 +9,7 @@ class FunctionalTester:
   Copyright: 2011 - Ian Murray
   """
   
-  def __init__(self, script_to_test, steps = []):
+  def __init__(self, script_to_test, steps = [], die_on_difference = True):
     """
     steps should be a list like this:
     
@@ -30,6 +30,7 @@ class FunctionalTester:
     """
     self.script_to_test = script_to_test
     self.steps = steps
+    self.die_on_difference = die_on_difference
   
   def log(self, message):
     print ">>>", message
@@ -58,15 +59,15 @@ class FunctionalTester:
     
     for line in source:
       if re.search("raw_input", line):
-        dest.write("sys.stdout.write('<RIS')\n")
-        dest.write(line)
-        dest.write("sys.stdout.write('RIE>')\n")
+        dest.write("sys.stdout.write('<RIS>')\n")
+        dest.write(line + "\n")
+        dest.write("sys.stdout.write('<RIE>')\n")
       elif re.search("print", line):
-        dest.write("sys.stdout.write('<PS')\n")
-        dest.write(line)
-        dest.write("sys.stdout.write('PE>')\n")
+        dest.write("sys.stdout.write('<PS>')\n")
+        dest.write(line + "\n")
+        dest.write("sys.stdout.write('<PE>')\n")
       else:
-        dest.write(line)
+        dest.write(line + "\n")
     
     source.close()
     dest.close()
@@ -78,7 +79,7 @@ class FunctionalTester:
     output = program.communicate(the_steps)[0]
     
     # Parse the output, this should match all output sent by print statements
-    matches = re.findall(r'<PS([^(PE>)]+)PE>', output)
+    matches = re.findall(r'<PS>([^<]*)<PE>', output)
     
     # Do we have the same ammount of prints and comparison steps?
     # Count them
@@ -87,12 +88,18 @@ class FunctionalTester:
       if step["action"] == "assert":
         comparison_steps.append(step)
     
+    self.log("There are %s comparisons, %s matches." % (len(comparison_steps), len(matches)))
+    
     if len(matches) != len(comparison_steps):
       self.log("FATAL: Ammount of comparison steps and prints in the script differ.")
       self.log("These were the outputs:")
       for match in matches:
         print "  ", match.strip()
-      exit(1)
+      
+      if self.die_on_difference:
+        exit(1)
+      else:
+        return
     
     # Now use the compare steps
     step_outcomes = []
