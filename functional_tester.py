@@ -86,7 +86,7 @@ class FunctionalTester:
         #dest.write("sys.stdout.write('<RIE>')\n")
         pass
       elif re.search("print", line):
-        matches = re.search(r'print (.+)\n?', line)
+        matches = re.search(r'print\s?(.+)\n?', line)
         
         # Split this by comma
         outputer = []
