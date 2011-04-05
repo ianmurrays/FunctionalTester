@@ -90,7 +90,7 @@ class FunctionalTester:
         #dest.write("sys.stdout.write('<PS>')\n")
         #dest.write(line + "\n")
         #dest.write("outputter.output(" + match.groups()[0] + ")\n")
-        dest.write(re.sub(r'(.*)print (.+)\n?', r'\1outputter.output(\2)\n', line))
+        dest.write(re.sub(r'(.*)print\s*(.+)', r'\1outputter.output(\2)\n', line))
         #dest.write("sys.stdout.write('<PE>')\n")
       else:
         dest.write(line + "\n")
