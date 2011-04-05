@@ -86,11 +86,17 @@ class FunctionalTester:
         #dest.write("sys.stdout.write('<RIE>')\n")
         pass
       elif re.search("print", line):
-        match = re.search(r'print (.+)\n?', line)
+        matches = re.search(r'print (.+)\n?', line)
+        
+        # Split this by comma
+        outputer = []
+        for match in matches.groups()[0].split(','):
+          outputer.append("str(" + match + ")")
+        outputer = '+'.join(outputer)
         #dest.write("sys.stdout.write('<PS>')\n")
         #dest.write(line + "\n")
         #dest.write("outputter.output(" + match.groups()[0] + ")\n")
-        dest.write(re.sub(r'(.*)print\s*(.+)', r'\1outputter.output(\2)\n', line))
+        dest.write(re.sub(r'(.*)print\s*(.+)', r'\1outputter.output(' + outputer + ')\n', line))
         #dest.write("sys.stdout.write('<PE>')\n")
       else:
         dest.write(line + "\n")
