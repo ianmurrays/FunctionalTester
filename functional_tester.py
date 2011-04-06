@@ -1,14 +1,34 @@
+"""
+Copyright (c) 2011 Ian Murray
+
+Permission is hereby granted, free of charge, to any
+person obtaining a copy of this software and associated
+documentation files (the "Software"), to deal in the
+Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the
+Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice
+shall be included in all copies or substantial portions of
+the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS
+OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+"""
+
 from subprocess import Popen, PIPE
 import re
 import sys
 
 class FunctionalTester:
-  """
-  Author: Ian Murray
-  Date: March 27th, 2011
-  Copyright: 2011 - Ian Murray
-  """
-  
   def __init__(self, script_to_test, tests = [], die_on_difference = True):
     """
     steps should be a list like this:
@@ -89,14 +109,14 @@ class FunctionalTester:
         matches = re.search(r'print\s?(.+)\n?', line)
         
         # Split this by comma
-        outputer = []
-        for match in matches.groups()[0].split(','):
-          outputer.append("str(" + match + ")")
-        outputer = '+'.join(outputer)
+        #outputer = []
+        #for match in matches.groups()[0].split(','):
+        #  outputer.append("str(" + match + ")")
+        #outputer = '+'.join(outputer)
         #dest.write("sys.stdout.write('<PS>')\n")
         #dest.write(line + "\n")
         #dest.write("outputter.output(" + match.groups()[0] + ")\n")
-        dest.write(re.sub(r'(.*)print\s*(.+)', r'\1outputter.output(' + outputer + ')\n', line))
+        dest.write(re.sub(r'(.*)print\s*(.+)', r'\1outputter.newoutput(\2)\n', line))
         #dest.write("sys.stdout.write('<PE>')\n")
       else:
         dest.write(line + "\n")

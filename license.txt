@@ -1,4 +1,3 @@
-"""
 Copyright (c) 2011 Ian Murray
 
 Permission is hereby granted, free of charge, to any
@@ -22,19 +21,3 @@ OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
 OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-"""
-
-# Empty the file
-def emptyfile():
-  output = file("temp.out", "w")
-  output.close()
-
-def output(string):
-  output = file("temp.out", "a")
-  output.write(string)
-  output.close()
-  
-def newoutput(*args):
-  output = file("temp.out", "a")
-  output.write(" ".join(args))
-  output.close()
