@@ -31,20 +31,36 @@ import sys
 class FunctionalTester:
   def __init__(self, script_to_test, tests = [], die_on_difference = True):
     """
-    steps should be a list like this:
-    
+    tests should be a list like the following. Each list in the list is a test that will
+    run the script to be tested all over. This way multiple tests can be passed to the tester.
     [
-      # Send my name to the script
-      {
-        "action": "send",
-        "message": "John Doe" # Assuming the script should be asking for your name here, for example
-      },
+      [
+        # Send my name to the script
+        {
+          "action": "send",
+          "message": "John Doe" # Assuming the script should be asking for your name here, for example
+        },
+
+        # Assert output of the script
+        {
+          "action": "assert",
+          "comparison": "Hi John Doe!" # The assertion can be a regular expression =D
+        }
+      ],
       
-      # Assert output of the script
-      {
-        "action": "assert",
-        "comparison": "Hi John Doe!" # The assertion can be a regular expression =D
-      }
+      [
+        # Send my name to the script
+        {
+          "action": "send",
+          "message": "Mary Lou"
+        },
+
+        # Assert output of the script
+        {
+          "action": "assert",
+          "comparison": "Hi Mary Lout!"
+        }
+      ]
     ]
     
     """
